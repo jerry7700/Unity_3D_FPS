@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33000010231696242}
   - component: {fileID: 23000013093344526}
   - component: {fileID: 64000011706813114}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cargo_container_v1_LD2open
   m_TagString: Untagged
   m_Icon: {fileID: 0}
