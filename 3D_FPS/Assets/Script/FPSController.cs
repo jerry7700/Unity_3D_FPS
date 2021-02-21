@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 public class FPSController : MonoBehaviour
 {
@@ -27,8 +29,27 @@ public class FPSController : MonoBehaviour
     public float BulletSpeed;
     [Header("子彈彈夾")]
     public int BulletCurrent;
+    [Header("補充彈夾")]
+    public int Bulletclip;
     [Header("總子彈")]
     public int BulletTotal;
+    [Header("文字:子彈彈夾")]
+    public Text textBulletCurrent;
+    [Header("文字:總子彈")]
+    public Text textBulletTotal;
+    [Header("補充子彈時間"), Range(0, 5)]
+    public int addBullettime;
+    [Header("開槍音效")]
+    public AudioClip SoundFire;
+    [Header("換彈音效")]
+    public AudioClip SoundAddBullet;
+    [Header("開槍間隔時間"), Range(0f, 1f)]
+    public float fireInterval;
+
+    private AudioSource aud;
+    private float timer;
+
+    private bool isAddBullet;
     #endregion
 
     /// <summary>
@@ -39,6 +60,7 @@ public class FPSController : MonoBehaviour
         Cursor.visible = false;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+        aud = GetComponent<AudioSource>();
     }
     /// <summary>
     /// 地板球體
@@ -54,6 +76,7 @@ public class FPSController : MonoBehaviour
         Move();
         Jump();
         Fire();
+        AddBullet();
     }
     /// <summary>
     /// 移動
@@ -77,7 +100,7 @@ public class FPSController : MonoBehaviour
         //物理.覆蓋球體(中心點 + 位移, 半徑, 1 >> 8)
         Collider[] hits = Physics.OverlapSphere(transform.position + floorOffset, floorRadius, 1 << 8);
 
-        if(hits.Length > 0 && hits[0] && Input.GetKeyDown(KeyCode.Space))
+        if (hits.Length > 0 && hits[0] && Input.GetKeyDown(KeyCode.Space))
         {
             rb.AddForce(0, jump, 0);
         }
@@ -87,10 +110,53 @@ public class FPSController : MonoBehaviour
     /// </summary>
     private void Fire()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && BulletCurrent > 0 && !isAddBullet)
         {
-            GameObject temp = Instantiate(Bullet, firePoint.position, firePoint.rotation);
-            temp.GetComponent<Rigidbody>().AddForce(-firePoint.forward * BulletSpeed);
+            if(timer >= fireInterval)
+            {
+                anim.SetTrigger("開槍觸發");
+                timer = 0;
+                aud.PlayOneShot(SoundFire, Random.Range(0.5f, 1.2f));
+
+                BulletCurrent--;
+                textBulletCurrent.text = BulletCurrent.ToString();
+                GameObject temp = Instantiate(Bullet, firePoint.position, firePoint.rotation);
+                temp.GetComponent<Rigidbody>().AddForce(-firePoint.forward * BulletSpeed);
+            }
+            else
+            {
+                timer += Time.deltaTime;
+            }
         }
     }
+
+    private void AddBullet()
+    {
+        if (Input.GetKeyDown(KeyCode.R) && !isAddBullet && BulletTotal > 0 && BulletCurrent < Bulletclip)
+        {
+            StartCoroutine(AddBulletDelay());
+        }
+    }
+    private IEnumerator AddBulletDelay()
+    {
+        anim.SetTrigger("換彈觸發");
+        aud.PlayOneShot(SoundAddBullet, Random.Range(0.5f, 1.2f));
+        isAddBullet = true;
+        yield return new WaitForSeconds(addBullettime);
+        isAddBullet = false;
+        int add = Bulletclip - BulletCurrent;
+        if (BulletTotal >= add)
+        {
+            BulletCurrent += add;
+            BulletTotal -= add;
+        }
+        else
+        {
+            BulletCurrent += BulletTotal;
+            BulletTotal = 0;
+        }
+        textBulletCurrent.text = BulletCurrent.ToString();
+        textBulletTotal.text = BulletTotal.ToString();
+    }
+
 }
