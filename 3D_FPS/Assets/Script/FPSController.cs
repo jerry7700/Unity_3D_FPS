@@ -110,13 +110,13 @@ public class FPSController : MonoBehaviour
     /// </summary>
     private void Fire()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && BulletCurrent > 0 && !isAddBullet)
+        if (Input.GetKey(KeyCode.Mouse0) && BulletCurrent > 0 && !isAddBullet)
         {
             if(timer >= fireInterval)
             {
                 anim.SetTrigger("開槍觸發");
                 timer = 0;
-                aud.PlayOneShot(SoundFire, Random.Range(0.5f, 1.2f));
+                aud.PlayOneShot(SoundFire, Random.Range(0.5f, 0.5f));
 
                 BulletCurrent--;
                 textBulletCurrent.text = BulletCurrent.ToString();
@@ -140,7 +140,7 @@ public class FPSController : MonoBehaviour
     private IEnumerator AddBulletDelay()
     {
         anim.SetTrigger("換彈觸發");
-        aud.PlayOneShot(SoundAddBullet, Random.Range(0.5f, 1.2f));
+        aud.PlayOneShot(SoundAddBullet, Random.Range(0.5f, 0.5f));
         isAddBullet = true;
         yield return new WaitForSeconds(addBullettime);
         isAddBullet = false;
