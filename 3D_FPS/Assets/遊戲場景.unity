@@ -412,16 +412,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62fb2b87aafa2384c826c4df8d062e7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.5
+  speed: 3
   rangeAttack: 6
   Point: {fileID: 1421352396}
   Bullet: {fileID: 5810794665491155652, guid: 68de47a1969d89f4dbe21fa567514cbf, type: 3}
   BulletSpeed: 500
   Interval: 0.5
   Fireface: 3
-  BulletCount: 3
+  BulletCount: 30
   BulletClip: 30
-  addBullettime: 0
+  addBullettime: 3
+  HP: 200
 --- !u!4 &134968209 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000012589328442, guid: 231f567299ef5844f8dca0461bf7a80b,
@@ -3932,6 +3933,7 @@ MonoBehaviour:
   SoundFire: {fileID: 8300000, guid: 906bb435275dee8419f98be0334abd10, type: 3}
   SoundAddBullet: {fileID: 8300000, guid: 703b9e651000f4744acdeb4daa524833, type: 3}
   fireInterval: 0.05
+  bulletAttack: 30
 --- !u!82 &1046427473
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5236,13 +5238,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1553618246}
-  m_LocalRotation: {x: -0, y: 0.12290823, z: -0, w: 0.99241805}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.0000001322478, y: 1.575, z: 0.09999966}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1046427469}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 14.120001, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &1553618249
 Camera:
   m_ObjectHideFlags: 0

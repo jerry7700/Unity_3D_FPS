@@ -45,6 +45,8 @@ public class FPSController : MonoBehaviour
     public AudioClip SoundAddBullet;
     [Header("開槍間隔時間"), Range(0f, 1f)]
     public float fireInterval;
+    [Header("攻擊力")]
+    public int bulletAttack;
 
     private AudioSource aud;
     private float timer;
@@ -122,6 +124,7 @@ public class FPSController : MonoBehaviour
                 textBulletCurrent.text = BulletCurrent.ToString();
                 GameObject temp = Instantiate(Bullet, firePoint.position, firePoint.rotation);
                 temp.GetComponent<Rigidbody>().AddForce(-firePoint.forward * BulletSpeed);
+                temp.GetComponent<Bullet>().attack = bulletAttack;
             }
             else
             {

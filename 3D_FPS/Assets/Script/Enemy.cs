@@ -38,9 +38,12 @@ public class Enemy : MonoBehaviour
     [Header("彈夾數量")]
     public int BulletClip = 30;
     [Header("補充子彈時間"), Range(0, 5)]
-    public int addBullettime;
+    public float addBullettime;
+    [Header("血量")]
+    public float HP = 100;
 
     private float timer;
+    private bool isBullet;
     #endregion
 
     #region 方法
@@ -64,11 +67,13 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        if (isBullet) return;
         Tack();
-        Fire();
-        FacetoPlayer();
     }
 
+    /// <summary>
+    /// 移動
+    /// </summary>
     private void Tack()
     {
         nav.SetDestination(Player.position);
@@ -79,6 +84,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
+            Fire();
             anim.SetBool("跑步開關", false);
         }
     }
@@ -97,6 +103,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
+            FacetoPlayer();
             timer += Time.deltaTime;
         }
     }
@@ -114,16 +121,58 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 延遲換彈
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator AddBullet()
     {
         anim.SetTrigger("換彈觸發");
+        isBullet = true;
         yield return new WaitForSeconds(addBullettime);
+        isBullet = false;
         BulletCount += BulletClip;
     }
+
+    /// <summary>
+    /// 面向玩家
+    /// </summary>
     private void FacetoPlayer()
     {
         Quaternion faceAngle = Quaternion.LookRotation(Player.position - transform.position);
         transform.rotation = Quaternion.Lerp(transform.rotation, faceAngle, Time.deltaTime * Fireface);
+    }
+
+    /// <summary>
+    /// 受傷
+    /// </summary>
+    /// <param name="getDamage"></param>
+    private void Damage(float getDamage)
+    {
+        HP -= getDamage;
+        if (HP <= 0) Dath();
+    }
+    
+    private void Dath()
+    {
+        anim.SetTrigger("死亡觸發");
+        GetComponent<SphereCollider>().enabled = false;
+        GetComponent<CapsuleCollider>().enabled = false;
+        this.enabled = false;
+
+    }
+
+    /// <summary>
+    /// 碰撞開始執行一次
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "子彈")
+        {
+            float damage = collision.gameObject.GetComponent<Bullet>().attack;
+            Damage(damage);
+        }
     }
     #endregion
 }
