@@ -301,7 +301,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400060, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.05
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 400060, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
       propertyPath: m_LocalPosition.z
@@ -341,14 +341,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 191186589b5522643b8b910f12b2127e, type: 2}
     - target: {fileID: 9500000, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'Bip001 L Hand'\n\tTransform 'Bip001 R Foot'\n\tTransform
-        'Bip001 R Finger0'\n\tTransform 'Bip001 R Toe0'\n\tTransform 'Bip001 Head'\n\tTransform
-        'Bip001 Spine1'\n\tTransform 'Bip001 R UpperArm'\n\tTransform 'Bip001 R Calf'\n\tTransform
-        'Bip001 L UpperArm'\n\tTransform 'Bip001 L Forearm'\n\tand more ...\n\tFrom
-        animation clip '\u7B49\u5F85'\n\tFrom animation clip '\u8DD1\u6B65'\n\tFrom
-        animation clip '\u958B\u69CD'"
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
@@ -391,8 +384,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.24
-  m_Center: {x: 0, y: 2.37, z: 0}
+  m_Radius: 0.18
+  m_Center: {x: 0, y: 1.95, z: 0}
 --- !u!136 &51871327
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -403,10 +396,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2.2
+  m_Radius: 0.31
+  m_Height: 1.77
   m_Direction: 1
-  m_Center: {x: 0, y: 1.1, z: 0}
+  m_Center: {x: 0, y: 0.92, z: 0}
 --- !u!114 &51871330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,11 +413,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2.5
-  rangeAttack: 10
+  rangeAttack: 6
   Point: {fileID: 1421352396}
   Bullet: {fileID: 5810794665491155652, guid: 68de47a1969d89f4dbe21fa567514cbf, type: 3}
   BulletSpeed: 500
   Interval: 0.5
+  Fireface: 3
+  BulletCount: 3
+  BulletClip: 30
+  addBullettime: 0
 --- !u!4 &134968209 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000012589328442, guid: 231f567299ef5844f8dca0461bf7a80b,
@@ -1494,37 +1491,37 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 945c76be94b345544a440038d487d695,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.3335872
+      value: 3.5091648
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945c76be94b345544a440038d487d695,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.18299997
+      value: 0.28999996
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945c76be94b345544a440038d487d695,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.6356509
+      value: -1.3282363
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945c76be94b345544a440038d487d695,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.060660314
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945c76be94b345544a440038d487d695,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945c76be94b345544a440038d487d695,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.99815845
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945c76be94b345544a440038d487d695,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945c76be94b345544a440038d487d695,
         type: 3}
@@ -1534,7 +1531,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 945c76be94b345544a440038d487d695,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 173.04501
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945c76be94b345544a440038d487d695,
         type: 3}

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
@@ -30,6 +31,14 @@ public class Enemy : MonoBehaviour
     public float BulletSpeed;
     [Header("開槍間隔時間"), Range(0f, 5f)]
     public float Interval;
+    [Header("開槍轉向"), Range(0f, 100f)]
+    public float Fireface;
+    [Header("彈夾目前數量")]
+    public int BulletCount = 30;
+    [Header("彈夾數量")]
+    public int BulletClip = 30;
+    [Header("補充子彈時間"), Range(0, 5)]
+    public int addBullettime;
 
     private float timer;
     #endregion
@@ -57,9 +66,10 @@ public class Enemy : MonoBehaviour
     {
         Tack();
         Fire();
+        FacetoPlayer();
     }
 
-    public void Tack()
+    private void Tack()
     {
         nav.SetDestination(Player.position);
 
@@ -73,17 +83,47 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void Fire()
+    /// <summary>
+    /// 開槍
+    /// </summary>
+    private void Fire()
     {
         if(timer >= Interval)
         {
             timer = 0;
-            Instantiate(Bullet, Point.position, Point.rotation);
+            GameObject temp = Instantiate(Bullet, Point.position, Point.rotation);
+            temp.GetComponent<Rigidbody>().AddForce(-Point.right * BulletSpeed);
+            ManageBulletCount();
         }
         else
         {
             timer += Time.deltaTime;
         }
+    }
+
+    /// <summary>
+    /// 管理子彈數量
+    /// </summary>
+    private void ManageBulletCount()
+    {
+        BulletCount--;
+
+        if(BulletCount < 0)
+        {
+            StartCoroutine(AddBullet());
+        }
+    }
+
+    private IEnumerator AddBullet()
+    {
+        anim.SetTrigger("換彈觸發");
+        yield return new WaitForSeconds(addBullettime);
+        BulletCount += BulletClip;
+    }
+    private void FacetoPlayer()
+    {
+        Quaternion faceAngle = Quaternion.LookRotation(Player.position - transform.position);
+        transform.rotation = Quaternion.Lerp(transform.rotation, faceAngle, Time.deltaTime * Fireface);
     }
     #endregion
 }
