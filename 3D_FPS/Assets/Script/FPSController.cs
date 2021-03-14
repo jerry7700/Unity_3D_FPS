@@ -9,6 +9,8 @@ public class FPSController : MonoBehaviour
     public float Speed;
     [Header("視角靈敏度"), Range(0, 2000)]
     public float turn;
+    [Header("準星上下移動靈敏度"), Range(0, 2000)]
+    public float cameraSpeed;
     [Header("跳躍"), Range(0, 10000)]
     public float jump;
     [Header("地板偵測位移")]
@@ -18,6 +20,8 @@ public class FPSController : MonoBehaviour
     [Header("血量與血條")]
     public Text textHp;
     public Image imageHp;
+    [Header("上下範圍限制")]
+    public Vector2 cameraLimit = new Vector2(2, 3.5f);
 
     private Transform traMain;
     private Transform traCam;
@@ -57,6 +61,7 @@ public class FPSController : MonoBehaviour
 
     private AudioSource aud;
     private float timer;
+    private Transform target;
 
     private bool isAddBullet;
     #endregion
@@ -71,8 +76,9 @@ public class FPSController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         aud = GetComponent<AudioSource>();
 
-        traMain = transform.Find("Main Camera");
-        traCam = transform.Find("Camera");
+        traMain = transform.Find("攝影機").Find("Main Camera");
+        traCam = transform.Find("攝影機").Find("Camera");
+        target = transform.Find("目標");
     }
     /// <summary>
     /// 地板球體
@@ -102,6 +108,12 @@ public class FPSController : MonoBehaviour
 
         float x = Input.GetAxis("Mouse X");
         transform.Rotate(0, x * Time.deltaTime * turn, 0);
+
+        float y = Input.GetAxis("Mouse Y");
+        Vector3 posTarget = target.localPosition;
+        posTarget.y += y * Time.deltaTime * cameraSpeed;
+        posTarget.y = Mathf.Clamp(posTarget.y, cameraLimit.x, cameraLimit.y);
+        target.localPosition = posTarget;
     }
     /// <summary>
     /// 跳躍
