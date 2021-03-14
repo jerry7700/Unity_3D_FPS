@@ -9,13 +9,20 @@ public class FPSController : MonoBehaviour
     public float Speed;
     [Header("視角靈敏度"), Range(0, 2000)]
     public float turn;
-    [Header("跳躍"), Range(0, 2000)]
+    [Header("跳躍"), Range(0, 10000)]
     public float jump;
     [Header("地板偵測位移")]
     public Vector3 floorOffset;
     [Header("地板偵測半徑"), Range(0, 20)]
     public float floorRadius = 1;
+    [Header("血量與血條")]
+    public Text textHp;
+    public Image imageHp;
 
+    private Transform traMain;
+    private Transform traCam;
+    private float HP = 100;
+    private float HPmax = 100;
     private Animator anim;
     private Rigidbody rb;
     #endregion
@@ -63,6 +70,9 @@ public class FPSController : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         aud = GetComponent<AudioSource>();
+
+        traMain = transform.Find("Main Camera");
+        traCam = transform.Find("Camera");
     }
     /// <summary>
     /// 地板球體
@@ -140,6 +150,7 @@ public class FPSController : MonoBehaviour
             StartCoroutine(AddBulletDelay());
         }
     }
+
     private IEnumerator AddBulletDelay()
     {
         anim.SetTrigger("換彈觸發");
@@ -162,4 +173,77 @@ public class FPSController : MonoBehaviour
         textBulletTotal.text = BulletTotal.ToString();
     }
 
+    /// <summary>
+    /// 受傷
+    /// </summary>
+    /// <param name="getDamage"></param>
+    private void Damage(float getDamage)
+    {
+        if (HP <= 0) return;
+
+        HP -= getDamage;
+ 
+        if (HP <= 0) Dath();
+
+        textHp.text = HP.ToString();
+        imageHp.fillAmount = HP / HPmax;
+    }
+
+    /// <summary>
+    /// 死亡
+    /// </summary>
+    private void Dath()
+    {
+        HP = 0;
+        anim.SetTrigger("死亡觸發");
+        this.enabled = false;
+        StartCoroutine(MoveCamera());
+    }
+
+    /// <summary>
+    /// 攝影機位移
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator MoveCamera()
+    {
+        traMain.LookAt(transform);
+        traCam.LookAt(transform);
+
+        Vector3 posCam = traMain.position;
+
+        float yCam = posCam.y;
+        float zCam = posCam.z;
+        float xCam = posCam.x;
+        float upCam = yCam + 3;
+        float lCam = xCam - 1.5f;
+        float backCam = zCam + 0.8f;
+
+        while(yCam < upCam)
+        {
+            yCam += 0.05f;
+            if (xCam > lCam) xCam -= 0.1f;
+            if (zCam < backCam) zCam += 0.1f;
+            posCam.y = yCam;
+            posCam.z = zCam;
+            posCam.x = xCam;
+
+            traMain.position = posCam;
+            traCam.position = posCam;
+
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+
+    /// <summary>
+    /// 碰撞開始執行一次
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "子彈")
+        {
+            float damage = collision.gameObject.GetComponent<Bullet>().attack;
+            Damage(damage);
+        }
+    }
 }

@@ -41,6 +41,8 @@ public class Enemy : MonoBehaviour
     public float addBullettime;
     [Header("血量")]
     public float HP = 100;
+    [Header("攻擊力")]
+    public int bulletAttack =5;
 
     private float timer;
     private bool isBullet;
@@ -99,6 +101,7 @@ public class Enemy : MonoBehaviour
             timer = 0;
             GameObject temp = Instantiate(Bullet, Point.position, Point.rotation);
             temp.GetComponent<Rigidbody>().AddForce(-Point.right * BulletSpeed);
+            temp.GetComponent<Bullet>().attack = bulletAttack;
             ManageBulletCount();
         }
         else
@@ -153,6 +156,9 @@ public class Enemy : MonoBehaviour
         if (HP <= 0) Dath();
     }
     
+    /// <summary>
+    /// 死亡
+    /// </summary>
     private void Dath()
     {
         anim.SetTrigger("死亡觸發");
