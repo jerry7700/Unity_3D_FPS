@@ -23,6 +23,7 @@ public class FPSController : MonoBehaviour
     [Header("上下範圍限制")]
     public Vector2 cameraLimit = new Vector2(2, 3.5f);
 
+    private string nameEnemy;
     private Transform traMain;
     private Transform traCam;
     private float HP = 100;
@@ -62,6 +63,7 @@ public class FPSController : MonoBehaviour
     private AudioSource aud;
     private float timer;
     private Transform target;
+    private GameManager gm;
 
     private bool isAddBullet;
     #endregion
@@ -75,6 +77,7 @@ public class FPSController : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         aud = GetComponent<AudioSource>();
+        gm = FindObjectOfType<GameManager>();
 
         traMain = transform.Find("攝影機").Find("Main Camera");
         traCam = transform.Find("攝影機").Find("Camera");
@@ -210,6 +213,12 @@ public class FPSController : MonoBehaviour
         anim.SetTrigger("死亡觸發");
         this.enabled = false;
         StartCoroutine(MoveCamera());
+
+        gm.UpdateDataDead(gm.killPlayer, gm.textDataPalyer, "玩家 ", ref gm.deadPlayer);
+
+        if (nameEnemy.Contains("敵方 1")) gm.UpdateDataKill(ref gm.killNpc1, gm.textDataNpc1, "電腦1", gm.deadNpc1);
+        else if (nameEnemy.Contains("敵方 2")) gm.UpdateDataKill(ref gm.killNpc2, gm.textDataNpc2, "電腦2", gm.deadNpc2);
+        else if (nameEnemy.Contains("敵方 3")) gm.UpdateDataKill(ref gm.killNpc3, gm.textDataNpc3, "電腦3", gm.deadNpc3);
     }
 
     /// <summary>
@@ -255,6 +264,7 @@ public class FPSController : MonoBehaviour
         if (collision.gameObject.tag == "子彈")
         {
             float damage = collision.gameObject.GetComponent<Bullet>().attack;
+            nameEnemy = collision.gameObject.name;
             Damage(damage);
         }
     }

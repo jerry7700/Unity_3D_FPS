@@ -43,6 +43,7 @@ public class Enemy : MonoBehaviour
     public float HP = 100;
     [Header("攻擊力")]
     public int bulletAttack =5;
+    private GameManager gm;
 
     private float timer;
     private bool isBullet;
@@ -57,6 +58,8 @@ public class Enemy : MonoBehaviour
         Player = GameObject.Find("玩家").transform;
         anim = GetComponent<Animator>();
         nav = GetComponent<NavMeshAgent>();
+        gm = FindObjectOfType<GameManager>();
+
         nav.speed = speed;
         nav.stoppingDistance = rangeAttack;
     }
@@ -102,6 +105,7 @@ public class Enemy : MonoBehaviour
             GameObject temp = Instantiate(Bullet, Point.position, Point.rotation);
             temp.GetComponent<Rigidbody>().AddForce(-Point.right * BulletSpeed);
             temp.GetComponent<Bullet>().attack = bulletAttack;
+            temp.name += name;
             ManageBulletCount();
         }
         else
@@ -152,6 +156,8 @@ public class Enemy : MonoBehaviour
     /// <param name="getDamage"></param>
     private void Damage(float getDamage)
     {
+        if (HP <= 0) return;
+
         HP -= getDamage;
         if (HP <= 0) Dath();
     }
@@ -166,6 +172,11 @@ public class Enemy : MonoBehaviour
         GetComponent<CapsuleCollider>().enabled = false;
         this.enabled = false;
 
+        gm.UpdateDataKill(ref gm.killPlayer, gm.textDataPalyer, "玩家 ", gm.deadPlayer);
+
+        if (name == "敵方 1") gm.UpdateDataDead(gm.killNpc1, gm.textDataNpc1, "電腦1", ref gm.deadNpc1);
+        else if(name == "敵方 2") gm.UpdateDataDead(gm.killNpc2, gm.textDataNpc2, "電腦2", ref gm.deadNpc2);
+        else if(name == "敵方 3") gm.UpdateDataDead(gm.killNpc3, gm.textDataNpc3, "電腦3", ref gm.deadNpc3);
     }
 
     /// <summary>
