@@ -214,11 +214,11 @@ public class FPSController : MonoBehaviour
         this.enabled = false;
         StartCoroutine(MoveCamera());
 
-        gm.UpdateDataDead(gm.killPlayer, gm.textDataPalyer, "玩家 ", ref gm.deadPlayer);
+        gm.UpdateDataDead(GameManager.killPlayer, gm.textDataPalyer, "玩家 ", ref GameManager.deadPlayer);
 
-        if (nameEnemy.Contains("敵方 1")) gm.UpdateDataKill(ref gm.killNpc1, gm.textDataNpc1, "電腦1", gm.deadNpc1);
-        else if (nameEnemy.Contains("敵方 2")) gm.UpdateDataKill(ref gm.killNpc2, gm.textDataNpc2, "電腦2", gm.deadNpc2);
-        else if (nameEnemy.Contains("敵方 3")) gm.UpdateDataKill(ref gm.killNpc3, gm.textDataNpc3, "電腦3", gm.deadNpc3);
+        if (nameEnemy.Contains("敵方 1")) gm.UpdateDataKill(ref GameManager.killNpc1, gm.textDataNpc1, "電腦1", GameManager.deadNpc1);
+        else if (nameEnemy.Contains("敵方 2")) gm.UpdateDataKill(ref GameManager.killNpc2, gm.textDataNpc2, "電腦2", GameManager.deadNpc2);
+        else if (nameEnemy.Contains("敵方 3")) gm.UpdateDataKill(ref GameManager.killNpc3, gm.textDataNpc3, "電腦3", GameManager.deadNpc3);
     }
 
     /// <summary>

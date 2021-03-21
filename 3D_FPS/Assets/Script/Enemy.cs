@@ -172,11 +172,11 @@ public class Enemy : MonoBehaviour
         GetComponent<CapsuleCollider>().enabled = false;
         this.enabled = false;
 
-        gm.UpdateDataKill(ref gm.killPlayer, gm.textDataPalyer, "玩家 ", gm.deadPlayer);
+        gm.UpdateDataKill(ref GameManager.killPlayer, gm.textDataPalyer, "玩家 ", GameManager.deadPlayer);
 
-        if (name == "敵方 1") gm.UpdateDataDead(gm.killNpc1, gm.textDataNpc1, "電腦1", ref gm.deadNpc1);
-        else if(name == "敵方 2") gm.UpdateDataDead(gm.killNpc2, gm.textDataNpc2, "電腦2", ref gm.deadNpc2);
-        else if(name == "敵方 3") gm.UpdateDataDead(gm.killNpc3, gm.textDataNpc3, "電腦3", ref gm.deadNpc3);
+        if (name == "敵方 1") gm.UpdateDataDead(GameManager.killNpc1, gm.textDataNpc1, "電腦1", ref GameManager.deadNpc1);
+        else if(name == "敵方 2") gm.UpdateDataDead(GameManager.killNpc2, gm.textDataNpc2, "電腦2", ref GameManager.deadNpc2);
+        else if(name == "敵方 3") gm.UpdateDataDead(GameManager.killNpc3, gm.textDataNpc3, "電腦3", ref GameManager.deadNpc3);
     }
 
     /// <summary>
